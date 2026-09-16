@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: private-contact-crm
+    runtime: node
+    plan: starter
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: private-contact-crm-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DEFAULT_ADMIN_EMAIL
+        value: admin@privatecrm.local
+      - key: DEFAULT_ADMIN_PASSWORD
+        sync: false
+      - key: DEFAULT_ADMIN_NAME
+        value: Owner Admin
+      - key: APP_ORIGIN
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESET_FROM_EMAIL
+        sync: false
+databases:
+  - name: private-contact-crm-db
+    plan: starter
+    databaseName: private_contact_crm
+    user: crm
